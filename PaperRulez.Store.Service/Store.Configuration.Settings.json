@@ -1,0 +1,27 @@
+﻿{
+  "Namespaces": [
+    {
+      "Namespace": "PaperRulez.Repositories",
+      "Types": [
+        {
+          "Name": "PaperRulez.Repositories.SqlServerLookupStore",
+          "Commands": {
+            "Record": {
+              "ConnectionAlias": "paperrulez",
+              "CommandText": "insert into client (client, documentid,keywords) values (@client, @documentId, @keywords)",
+              "CommandTimeout": 30,
+              "CommandType": 1,
+              "Flags": 1
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "Connections": [
+    {
+      "Alias": "paperrulez",
+      "ConnectionString": "Data Source=(LocalDb)\\mssqllocaldb;Initial Catalog=paperrulez;Integrated Security=true;"
+    }
+  ]
+}
