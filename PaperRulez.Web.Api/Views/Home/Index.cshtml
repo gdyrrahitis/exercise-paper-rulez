@@ -13,35 +13,37 @@
         @foreach (var client in Model.Clients)
         {
 
-        <div class="col-md-6">
-            <h2>@client.Name</h2>
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                <div class="panel panel-default">
-                    @for (var i = 0; i < client.Documents.Count(); i++)
-                    {
-                        var id = $"{client.Documents[i].Id}_{i}";
-                        var name = client.Documents[i].Name;
-                        <div class="panel-heading" role="tab" id="id">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#id" aria-expanded="true" aria-controls="@id">
-                                    @name.Substring(0, name.LastIndexOf("."))
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="@id" class="panel-collapse collapse in" role="tabpanel">
-                            <div class="panel-body">
-                                <form action="@Url.Action("Process")" method="post">
-                                    <input type="hidden" name="client" value="@client.Documents[i].Id" />
-                                    <input type="hidden" name="documentName" value="@name" />
-                                    <button type="button" onclick="process($(this).parent('form'))" class="btn btn-primary">Process @name</button>
-                                </form>
+            <div class="col-md-6">
+                <h2>@client.Name</h2>
+
+                @for (var i = 0; i < client.Documents.Count(); i++)
+                {
+                    var id = $"{client.Documents[i].Id}_{i}";
+                    var name = client.Documents[i].Name;
+
+                    <div class="panel-group" id="accordion_@id" name="@name" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default">
+                            
+                            <div class="panel-heading" role="tab" id="heading_@id">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion_@id" href="#panel_@id" aria-expanded="true" aria-controls="heading_@id">
+                                        @name.Substring(0, name.LastIndexOf("."))
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="panel_@id" class="panel-collapse collapse in" role="tabpanel">
+                                <div class="panel-body">
+                                    <form action="@Url.Action("Process")" method="post">
+                                        <input type="hidden" name="client" value="@client.Documents[i].Id" />
+                                        <input type="hidden" name="documentName" value="@name" />
+                                        <button type="button" name="@name" onclick="process($(this).parent('form'))" class="btn btn-primary">Process @name</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    }
-                </div>
+                    </div>
+                }
             </div>
-        </div>
-
         }
     </div>
 }
@@ -56,9 +58,9 @@ else
             $.post(form.attr("action"), {
                 Client: $(form).find("input[name='client']").val(),
                 DocumentName: $(form).find("input[name='documentName']").val()
-            }).then(function() {
+            }).then(function () {
                 console.log("submitted");
-            }, function(err) {
+            }, function (err) {
                 console.error(err);
             });
         }

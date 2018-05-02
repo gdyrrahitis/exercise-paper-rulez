@@ -12,10 +12,12 @@
 
     public class RabbitMqManager : IRabbitMqManager
     {
+        private readonly IHandler _handler;
         private readonly IModel _channel;
 
-        public RabbitMqManager(IConnectionFactory connectionFactory)
+        public RabbitMqManager(IConnectionFactory connectionFactory, IHandler handler)
         {
+            _handler = handler;
             var connection = connectionFactory.CreateConnection();
             _channel = connection.CreateModel();
             connection.AutoClose = true;
@@ -29,10 +31,7 @@
 
             _channel.BasicQos(prefetchCount: 1, prefetchSize: 0, global: false);
 
-            var consumer = new FileLoadRequestCommandConsumer(this, new Handler(new ProcessorFactory(new List<IProcessor>
-            {
-                new LookupProcessor()
-            })));
+            var consumer = new FileLoadRequestCommandConsumer(this, _handler);
             _channel.BasicConsume(queue: RabbitMqConstants.FileLoadQueue,
                 autoAck: false,
                 consumer: consumer);

@@ -43,6 +43,10 @@
         $(function () {
             var fileHub = $.connection.fileHub;
             fileHub.client.sendFileProcessed = function (client, documentName) {
+                var button = $("button[name='" + documentName + "']");
+                button.attr("disabled", "disabled");
+                button.addClass("disabled");
+                button.addClass("btn-success").removeClass("btn-primary");
                 alert("File " + documentName + " removed for client " + client);
             };
 
