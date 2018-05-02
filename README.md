@@ -44,3 +44,4 @@ container.Register(Component.For<IBlobStorage>().ImplementedBy<FileSystemBlobSto
 ```
 
 ## Video
+[Video here](https://drive.google.com/file/d/14MAlvfChTfRxy3YIwbJPEhBMo9GQbBlb/view?usp=sharing)
